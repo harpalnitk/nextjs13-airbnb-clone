@@ -65,4 +65,7 @@ since bcrypt does not come with types
 3. select nextjs-insta-clone project
 4. select OAuth2.0 
 4. select client_id and client_secret and place in .env files
-5. 
+
+
+## to parse query string
+> npm install query-string
