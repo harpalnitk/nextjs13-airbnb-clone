@@ -49,3 +49,20 @@ will push the schema to the mongodb and create all empty collections
 since bcrypt does not come with types
 
 > npm i -D @types/bcrypt
+
+## Github Login
+
+1. login to github
+2. go to settings
+3. go to developer settings
+4. click on oauth apps
+5. create a new oauth app
+6. in URL and callbackURL fields add http://localhost:3000/
+
+## Google login
+1. go to https://console.cloud.google.com/
+2. select credentials from left hand top menu
+3. select nextjs-insta-clone project
+4. select OAuth2.0 
+4. select client_id and client_secret and place in .env files
+5. 

@@ -8,6 +8,9 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prisma from "@/app/libs/prismadb";
 
 
+
+//not in app folder because next-auth
+//till date does not support app/api foldr
 export const authOptions: AuthOptions= {
     adapter: PrismaAdapter(prisma),
     providers: [

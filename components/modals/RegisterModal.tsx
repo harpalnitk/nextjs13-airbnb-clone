@@ -6,16 +6,18 @@ import { FcGoogle } from 'react-icons/fc';
 import { useCallback, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from "react-hot-toast";
-
+import { signIn } from "next-auth/react";
 import useRegisterModal from '@/app/hooks/useRegisterModal';
 
 import Modal from './Modal';
 import Heading from '../Heading';
 import Button from '../Button';
 import Input from "../inputs/Input";
+import useLoginModal from '@/app/hooks/useLoginModal';
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -38,7 +40,7 @@ const RegisterModal = () => {
       .then(() => {
         toast.success('Registered!');
         registerModal.onClose();
-        //loginModal.onOpen();
+        loginModal.onOpen();
       })
       .catch((error) => {
         toast.error('Something went wrong.');
@@ -47,6 +49,11 @@ const RegisterModal = () => {
         setIsLoading(false);
       });
   };
+
+  const onToggle = useCallback(() => {
+    registerModal.onClose();
+    loginModal.onOpen();
+  }, [registerModal, loginModal])
 
   const bodyContent = (
     <div className='flex flex-col gap-4'>
@@ -87,13 +94,13 @@ const RegisterModal = () => {
         outline 
         label="Continue with Google"
         icon={FcGoogle}
-       // onClick={() => signIn('google')} 
+       onClick={() => signIn('google')} 
       />
       <Button 
         outline 
         label="Continue with Github"
         icon={AiFillGithub}
-       // onClick={() => signIn('github')}
+       onClick={() => signIn('github')}
       />
       <div 
         className="
@@ -105,7 +112,7 @@ const RegisterModal = () => {
       >
         <p>Already have an account?
           <span 
-          //  onClick={onToggle} 
+           onClick={onToggle} 
             className="
               text-neutral-800
               cursor-pointer 
