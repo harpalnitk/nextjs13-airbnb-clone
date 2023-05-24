@@ -5,3 +5,12 @@
 html,body,:root{
     height:100%;
 }
+
+
+/* styles for map to work in rentModal step2  */
+.leaflet-bottom,
+.leaflet-control,
+.leaflet-pane,
+.leaflet-top {
+    z-index:0 !important;
+}

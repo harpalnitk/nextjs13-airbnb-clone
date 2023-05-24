@@ -69,3 +69,27 @@ since bcrypt does not come with types
 
 ## to parse query string
 > npm install query-string
+
+
+## npm package for all countries of the world
+> npm i world-countries
+
+## select dropdown
+> npm i react-select
+
+## For map functionality
+>npm i leaflet
+>npm i -D @types/leaflet
+>npm i react-leaflet
+
+## image upload with cloudinary
+>npm i next-cloudinary
+
+1. create an account on https://cloudinary.com/
+2. sign up for free
+3. click on dashboard
+4. copy your cloud name
+5. set in .env file NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+6. get upload preset from settings-> uploads
+7. in upload presets click on add_upload _preset
+note: siginin mode should be unsigned
