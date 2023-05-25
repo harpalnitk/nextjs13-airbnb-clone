@@ -93,3 +93,7 @@ since bcrypt does not come with types
 6. get upload preset from settings-> uploads
 7. in upload presets click on add_upload _preset
 note: siginin mode should be unsigned
+
+## format date function
+
+> npm i date-fns
