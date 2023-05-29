@@ -23,7 +23,12 @@ export default async function getReservations(
     if (userId) {
       query.userId = userId;
     }
-   //all resrevations other users made for our listings
+   //all resrevations other users (including self) 
+   //made on the listing created
+   //by the current user
+   //we are querying on the reservation table and in that 
+   //table we are querying on the userId of the
+   //listing
     if (authorId) {
       query.listing = { userId: authorId };
     }
