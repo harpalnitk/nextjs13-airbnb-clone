@@ -97,3 +97,10 @@ note: siginin mode should be unsigned
 ## format date function
 
 > npm i date-fns
+
+## date range
+> npm i react-date-range
+
+also install type definitions
+
+>npm i -D @types/react-date-range

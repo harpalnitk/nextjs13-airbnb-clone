@@ -8,6 +8,8 @@ import axios from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import { Range } from "react-date-range";
+import { differenceInCalendarDays, eachDayOfInterval } from 'date-fns';
 
 import useLoginModal from "@/app/hooks/useLoginModal";
 import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
@@ -15,6 +17,14 @@ import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import Container from "@/components/Container";
 import { categories } from "@/components/navbar/Categories";
 import ListingHead from "@/components/listings/ListingHead";
+import ListingInfo from "@/components/listings/ListingInfo";
+import ListingReservation from "@/components/listings/ListingReservation";
+
+const initialDateRange = {
+  startDate: new Date(),
+  endDate: new Date(),
+  key: 'selection'
+};
 
 
 interface ListingClientProps {
@@ -34,7 +44,26 @@ interface ListingClientProps {
     currentUser
   }) => {
 
+    const loginModal = useLoginModal();
+    const router = useRouter();
 
+
+    //if there is already a reservation for this listing
+    //we need to disable those dates
+    const disabledDates = useMemo(() => {
+      let dates: Date[] = [];
+  
+      reservations.forEach((reservation: any) => {
+        const range = eachDayOfInterval({
+          start: new Date(reservation.startDate),
+          end: new Date(reservation.endDate)
+        });
+  
+        dates = [...dates, ...range];
+      });
+  
+      return dates;
+    }, [reservations]);
 
     //database has only category value
     //we need icon also
@@ -43,6 +72,63 @@ interface ListingClientProps {
          items.label === listing.category);
      }, [listing.category]);
 
+
+     const [isLoading, setIsLoading] = useState(false);
+     const [totalPrice, setTotalPrice] = useState(listing.price);
+     const [dateRange, setDateRange] = useState<Range>(initialDateRange);
+
+
+     const onCreateReservation = useCallback(() => {
+      if (!currentUser) {
+        return loginModal.onOpen();
+      }
+      setIsLoading(true);
+
+      axios.post('/api/reservations', {
+        totalPrice,
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+        listingId: listing?.id
+      })
+      .then(() => {
+        toast.success('Listing reserved!');
+        setDateRange(initialDateRange);
+        //router.push('/trips');
+        router.refresh();
+      })
+      .catch(() => {
+        toast.error('Something went wrong.');
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
+  },
+  [
+    totalPrice, 
+    dateRange, 
+    listing?.id,
+    router,
+    currentUser,
+    loginModal
+  ]);
+
+
+  //set total price based on no. of days of booking
+  useEffect(() => {
+    if (dateRange.startDate && dateRange.endDate) {
+      //differenceInDays will ignore couple of hours difference
+      const dayCount = differenceInCalendarDays(
+        dateRange.endDate, 
+        dateRange.startDate
+      );
+      
+      if (dayCount && listing.price) {
+        setTotalPrice(dayCount * listing.price);
+      } else {
+        setTotalPrice(listing.price);
+      }
+    }
+  }, [dateRange, listing.price]);
 
      return ( 
         <Container>
@@ -60,6 +146,10 @@ interface ListingClientProps {
                 id={listing.id}
                 currentUser={currentUser}
               />
+
+               {/* 7 column grid ; 4 columns for listing info and
+               3 columns for listing reservation
+               in sizes less than md one column grid  */}
               <div 
                 className="
                   grid 
