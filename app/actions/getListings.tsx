@@ -37,6 +37,7 @@ export default async function getListings(
     }
 
     if (roomCount) {
+      //greater than or equal
       query.roomCount = {
         gte: +roomCount
       }
@@ -58,6 +59,8 @@ export default async function getListings(
       query.locationValue = locationValue;
     }
 
+    //filter out all listings which already have
+    //reservations in our desired(search) date range
     if (startDate && endDate) {
       query.NOT = {
         reservations: {

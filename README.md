@@ -104,3 +104,7 @@ note: siginin mode should be unsigned
 also install type definitions
 
 >npm i -D @types/react-date-range
+
+
+## Loader
+>npm i react-spinners

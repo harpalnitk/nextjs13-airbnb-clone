@@ -23,6 +23,9 @@ enum STEPS {
   INFO = 2,
 }
 
+
+//this modal opens on clicking in Saerch.tsx in navbar
+//and changes the URL
 const SearchModal = () => {
   const router = useRouter();
   const searchModal = useSearchModal();
@@ -79,6 +82,8 @@ const SearchModal = () => {
       updatedQuery.endDate = formatISO(dateRange.endDate);
     }
 
+    // on home page search results will appear
+    //with URL parameters to modify search
     const url = qs.stringifyUrl({
       url: '/',
       query: updatedQuery,
@@ -101,6 +106,10 @@ const SearchModal = () => {
     params
   ]);
 
+
+
+// when step is advanced or backed component will re-render
+//since step is useState()
   const actionLabel = useMemo(() => {
     if (step === STEPS.INFO) {
       return 'Search'
