@@ -108,3 +108,15 @@ also install type definitions
 
 ## Loader
 >npm i react-spinners
+
+## If you deploy an application using Prisma to Vercel, you may run into the following error message on deployment:
+
+Within the scripts section of your project's package.json file, if there is not already a script named postinstall, add one and add prisma generate to that script:
+
+{
+  ...
+  "scripts" {
+    "postinstall": "prisma generate"
+  }
+  ...
+}
